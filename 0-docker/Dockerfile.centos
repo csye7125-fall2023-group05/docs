@@ -1,0 +1,7 @@
+FROM centos:7
+
+RUN yum update -y
+
+# RUN ["sleep", "1"]
+
+# RUN ["java", "-jar", "abc.jar", "-Ddbhostname=shhsdhhds"]
