@@ -1,0 +1,6 @@
+---
+- name: "Import SSH Key"
+  hosts: localhost
+  gather_facts: no
+  roles:
+  - ec2-ssh-keypair
