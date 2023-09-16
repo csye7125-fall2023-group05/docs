@@ -1,4 +1,8 @@
-FROM node:7
+FROM node:latest
+
+RUN mkdir myapp
+
+WORKDIR myapp
 
 ADD app.js /app.js
 

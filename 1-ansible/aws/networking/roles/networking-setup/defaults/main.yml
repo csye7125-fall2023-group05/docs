@@ -1,6 +1,7 @@
 ---
 aws_region: us-east-1
-aws_profile: neu
+aws_profile: dev
+network_state: present
 vpc_name: "jenkins-{{ aws_region}}-vpc"
 vpc_cidr: 10.0.0.0/16
 vpc_subnets:

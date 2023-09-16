@@ -1,4 +1,4 @@
 ---
 aws_region: us-east-1
-aws_profile: default
+aws_profile: dev
 key_state: present

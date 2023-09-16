@@ -1,7 +1,7 @@
 ---
 - name: Create VPC for Jenkins
   ec2_vpc_net:
-    state: present
+    state: "{{ network_state }}"
     region: "{{ aws_region }}"
     name: "{{ vpc_name }}"
     cidr_block: "{{ vpc_cidr }}"
@@ -16,7 +16,7 @@
 
 - name: Create Internet Gateway
   ec2_vpc_igw:
-    state: present
+    state: "{{ network_state }}"
     profile: "{{ aws_profile }}"
     region: "{{ aws_region }}"
     vpc_id: "{{ jenkins_vpc.vpc.id }}"
@@ -26,7 +26,7 @@
 
 - name: Create subnets
   ec2_vpc_subnet:
-    state: present
+    state: "{{ network_state }}"
     profile: "{{ aws_profile }}"
     region: "{{ aws_region }}"
     az: "{{ item.value.az }}"
@@ -47,7 +47,7 @@
 
 - name: Update the route table in the vpc
   ec2_vpc_route_table:
-    state: present
+    state: "{{ network_state }}"
     lookup: id
     route_table_id: "{{ jenkins_route_table.route_tables[0].id }}"
     vpc_id: "{{ jenkins_vpc.vpc.id}}"
@@ -56,8 +56,8 @@
     tags:
       Name: "jenkins_route_table_{{ jenkins_vpc.vpc.id }}"
     subnets:
-        - "{{ jenkins_vpc_subnets.results[0].subnet.id }}"
-        - "{{ jenkins_vpc_subnets.results[1].subnet.id }}"
+      - "{{ jenkins_vpc_subnets.results[0].subnet.id }}"
+      - "{{ jenkins_vpc_subnets.results[1].subnet.id }}"
     routes:
       - dest: 0.0.0.0/0
         gateway_id: "{{ jenkins_igw.gateway_id }}"
@@ -65,7 +65,7 @@
 
 - name: "Create vpc security groups"
   ec2_group:
-    state: present
+    state: "{{ network_state }}"
     profile: "{{ aws_profile}}"
     region: "{{ aws_region }}"
     vpc_id: "{{ jenkins_vpc.vpc.id }}"
