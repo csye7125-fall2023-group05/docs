@@ -1,0 +1,24 @@
+---
+# ansible-playbook --ask-become-pass install_apache.yml
+- hosts: all
+  become: true
+  tasks:
+    # Ubuntu server setup
+    - name: "install the apache2 and php package for Ubuntu"
+      apt:
+        name:
+          - apache2
+          - libapache2-mod-php
+        state: latest
+        update_cache: true
+      when: ansible_distribution == "Ubuntu"
+
+    # CentOS server setup
+    - name: "install the apache and php package for CentOS"
+      dnf:
+        name:
+          - httpd
+          - php
+        state: latest
+        update_cache: true
+      when: ansible_distribution == "CentOS"
