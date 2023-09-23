@@ -1,0 +1,12 @@
+- name: install unzip
+  package:
+    name: unzip
+
+- name: install Terraform
+  unarchive:
+    src: https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip # download link address
+    dest: /usr/local/bin # downloads binary here
+    remote_src: true # notify ansible that this package is from the internet and not a package manager
+    mode: 0755
+    owner: root
+    group: root

@@ -5,7 +5,7 @@
 # runs on all servers
 - hosts: all
   become: true
-  tasks:
+  pre_tasks:
     # `pre_tasks:` can be used with roles when we want to mandate some things to run before others
     - name: update repo cache (CentOS)
       tags: always
@@ -23,109 +23,28 @@
 
 - hosts: all
   become: true
-  tasks:
-    - name: add ssh-key for simone
-      tags: always
-      authorized_keys:
-        user: simone
-        # ansible ssh public key
-        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChspJkMu9vZ2BmL3X2R8hVBHzT1BXZklUTPwmd8vq5DrpX4SZ9wTymwPm0EoeS2Fp6KDyAAKY88p7m6SRSpC0/KJtBQK4JVjpVTnWI3DYATb2amkomJpicAsc2Hbb+EBkDgF7rznQo7VLmQ3nSNG72Qm1oL5/WU3fjroiIFXH09zf3Cv0FCdIuuwnfx6KIFA4OxT2a1Yh5XdEGCAR3ucmAjSNdsHvzjMsYjpiWbK9vMzmAp2P7Z9v/9xVVeCUzMick8JvOGBHpt3DwHP7i88/X5Ym/f1aZxF19LKdK12p1/P9qD5f0TkdTQI2nVcUUPPMghwqqs86kFmGL0rPBrAD/WjI1i53xcY+VxgRdcPUjZKbHbJE/wM8v8Gz7VvqmvYm601nHgKmeYekZ0DWJw5e1xucfYLgygnWDv24MSBCMsGIMFfRX0b+IOKH+YPoXWsKU9ZDyyBN4C38kHjgFHcJ8zQA0XlBMv7JilNxvIWHUKQlZlvXnDnhl3Zil+oTB/0s= host@example.com"
+  roles:
+    - base
 
 - hosts: workstations
   become: true
-  tasks:
-    - name: install unzip
-      package:
-        name: unzip
-
-    - name: install Terraform
-      unarchive:
-        src: https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip # download link address
-        dest: /usr/local/bin # downloads binary here
-        remote_src: true # notify ansible that this package is from the internet and not a package manager
-        mode: 0755
-        owner: root
-        group: root
+  roles:
+    - workstations
 
 # runs only on web_servers defined in the `inventory` file
 - hosts: web_servers
   become: true
-  tasks:
-    - name: "install the apache2 and php package for Ubuntu"
-      tags: apache,apache2, ubuntu
-      apt:
-        name:
-          - apache2
-          - libapache2-mod-php
-        state: latest
-      when: ansible_distribution == "Ubuntu"
-
-    - name: "install the apache and php package for CentOS"
-      tags: apache,centos,https
-      dnf:
-        name:
-          - httpd
-          - php
-        state: latest
-      when: ansible_distribution == "CentOS"
-
-    - name: start httpd (CentOS)
-      tags: apache,centos,httpd
-      service: # module to start/stop/restart/enable a service
-        name: httpd
-        state: started
-        enabled: true
-      when: ansible_distribution = "CentOS"
-
-    - name: change e-mail address for admin
-      tags: apache,centos,httpd
-      lineinfile: # module to be used to change a line in a file
-        path: /etc/httpd/conf/httpd.conf # path to file which is to be changed
-        regexp: "^ServerAdmin" # for line beginning with "serverAdmin"
-        line: ServerAdmin somebody@somewhere.net # replace it with this line
-      when: ansible_distribution == "CentOS"
-      registered: httpd # capture the state in a variable and check it against httpd.changed
-
-    - name: restart httpd (CentOS)
-      tags: apache,centos,httpd
-      service:
-        name: httpd
-        state: restarted
-      when: httpd.changed
-
-    - name: copy default html file for site
-      tags: apache,apache2,httpd
-      copy:
-        src: default_site.html
-        dest: /var/www/html/index.html
-        owner: root
-        group: root
-        mode: 0644
+  roles:
+    - web_servers
 
 # runs only on db_servers defined in the `inventory` file
 - hosts: db_servers
   become: true
-  tasks:
-    - name: install mariadb package (CentOS)
-      tags: centos,mariadb
-      dnf:
-        name: mariadb
-        state: latest
-      when: ansible_distribution == "CentOS"
-
-    - name: install mariadb package (Ubuntu)
-      tags: ubuntu,db,mariadb
-      apt:
-        name: mariadb-server
-        state: latest
-      when: ansible_distribution == "Ubuntu"
+  roles:
+    - db_servers
 
 # runs only on file_servers defined in the `inventory` file
 - hosts: file_servers
   become: true
-  tasks:
-    - name: install samba package
-      tags: samba
-      package:
-        name: samba
-        state: latest
+  roles:
+    - file_servers
