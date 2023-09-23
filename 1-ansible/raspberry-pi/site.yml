@@ -1,25 +1,35 @@
 ---
 # target specific nodes
-# ansible-playbook --ask-become-pass site.yml
+# ansible-playbook site.yml
 
 # runs on all servers
 - hosts: all
   become: true
   tasks:
     # `pre_tasks:` can be used with roles when we want to mandate some things to run before others
-    - name: install updates (CentOS)
+    - name: update repo cache (CentOS)
       tags: always
       dnf:
-        update_only: true
         update_cache: true
+      changed_when: false
       when: ansible_distribution = "CentOS"
 
-    - name: install updates (Ubuntu)
+    - name: update repo cache (Ubuntu)
       tags: always
       apt:
-        upgrade: dist
         update_cache: true
+      changed_when: false
       when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+    - name: add ssh-key for simone
+      tags: always
+      authorized_keys:
+        user: simone
+        # ansible ssh public key
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChspJkMu9vZ2BmL3X2R8hVBHzT1BXZklUTPwmd8vq5DrpX4SZ9wTymwPm0EoeS2Fp6KDyAAKY88p7m6SRSpC0/KJtBQK4JVjpVTnWI3DYATb2amkomJpicAsc2Hbb+EBkDgF7rznQo7VLmQ3nSNG72Qm1oL5/WU3fjroiIFXH09zf3Cv0FCdIuuwnfx6KIFA4OxT2a1Yh5XdEGCAR3ucmAjSNdsHvzjMsYjpiWbK9vMzmAp2P7Z9v/9xVVeCUzMick8JvOGBHpt3DwHP7i88/X5Ym/f1aZxF19LKdK12p1/P9qD5f0TkdTQI2nVcUUPPMghwqqs86kFmGL0rPBrAD/WjI1i53xcY+VxgRdcPUjZKbHbJE/wM8v8Gz7VvqmvYm601nHgKmeYekZ0DWJw5e1xucfYLgygnWDv24MSBCMsGIMFfRX0b+IOKH+YPoXWsKU9ZDyyBN4C38kHjgFHcJ8zQA0XlBMv7JilNxvIWHUKQlZlvXnDnhl3Zil+oTB/0s= host@example.com"
 
 - hosts: workstations
   become: true
