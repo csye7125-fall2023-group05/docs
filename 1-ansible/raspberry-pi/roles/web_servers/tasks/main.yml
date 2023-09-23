@@ -2,8 +2,8 @@
   tags: apache,apache2, ubuntu
   apt:
     name:
-      - apache2
-      - libapache2-mod-php
+      - "{{ apache_package_name }}"
+      - "{{ php_package_name }}"
     state: latest
   when: ansible_distribution == "Ubuntu"
 
@@ -11,15 +11,15 @@
   tags: apache,centos,https
   dnf:
     name:
-      - httpd
-      - php
+      - "{{ apache_package_name }}"
+      - "{{ php_package_name }}"
     state: latest
   when: ansible_distribution == "CentOS"
 
 - name: start httpd (CentOS)
   tags: apache,centos,httpd
   service: # module to start/stop/restart/enable a service
-    name: httpd
+    name: "{{ apache_service }}"
     state: started
     enabled: true
   when: ansible_distribution = "CentOS"
@@ -31,14 +31,14 @@
     regexp: "^ServerAdmin" # for line beginning with "serverAdmin"
     line: ServerAdmin somebody@somewhere.net # replace it with this line
   when: ansible_distribution == "CentOS"
-  registered: httpd # capture the state in a variable and check it against httpd.changed
+  notify: restart_apache # notify a play called `restart_apache`
 
 - name: restart httpd (CentOS)
   tags: apache,centos,httpd
   service:
-    name: httpd
+    name: "{{ apache_service }}"
     state: restarted
-  when: httpd.changed
+  when: apache.changed
 
 - name: copy default html file for site
   tags: apache,apache2,httpd
