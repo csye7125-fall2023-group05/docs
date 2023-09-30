@@ -10,6 +10,13 @@
 - VPC Peering
 - Building Scalable & Reliable Systems
 
+## Setup/Installation
+
+- Install [minikube](https://kubernetes.io/docs/tutorials/hello-minikube/)
+- Install [kind](https://kind.sigs.k8s.io/)
+- Install [kops](https://kops.sigs.k8s.io/getting_started/install/)
+- [Setup and teardown k8s cluster using kops](https://kops.sigs.k8s.io/getting_started/aws/)
+
 ## Reading
 
 ### Bastion Hosts
@@ -26,6 +33,20 @@
 ### Building Scalable & Reliable Systems
 
 - [Building Secure and Reliable Systems](https://sre.google/books/building-secure-reliable-systems/)
+
+## K8s
+
+- [Local Cluster Options](https://www.cncf.io/wp-content/uploads/2020/08/CNCF-Webinar-Navigating-the-Sea-of-Local-Clusters-.pdf)
+- [Kubernetes the hard way](https://github.com/kelseyhightower/kubernetes-the-hard-way)
+
+### Tools
+
+- [Lens IDE](https://k8slens.dev/)
+- [k9s](https://k9scli.io/)
+- [silver-surfer](https://github.com/devtron-labs/silver-surfer)
+- [kube-ps1](https://github.com/jonmosco/kube-ps1)
+- [kube-capacity](https://github.com/robscott/kube-capacity)
+- [ktop](https://github.com/vladimirvivien/ktop)
 
 ## Lecture Notes
 
