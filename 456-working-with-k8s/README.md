@@ -75,11 +75,11 @@ networks:
 
 ### Init Containers
 
-- Like regular containers, except that they have to finish. 
+- Like regular containers, except that they have to finish.
 - They run sequentially.
 - If they do not finish, regular containers will not run.
 - Used for database migration, etc. [`flyway migrations`](https://documentation.red-gate.com/fd/migrations-184127470.html)
-- install [`DBeaver`](https://formulae.brew.sh/cask/dbeaver-community) to visualize db connections locally. 
+- install [`DBeaver`](https://formulae.brew.sh/cask/dbeaver-community) to visualize db connections locally.
 - config init containers in such  a way that will not hinder the application -> run migrations in init containers and the destory before running application containers.
 
 ### Replication
@@ -96,3 +96,36 @@ Even for very small services, we must have atleast two replicas to provide a ser
 - Run automated health checks for your apps -> liveness and readiness probes.
 - Sanity tests -> very basic tests
 - Sometimes app stop working without their processes crashing, but we need to perform health checks from outside without depending on the app to perform healthchecks.
+
+### ConfigMaps and Secrets
+
+- Use `ConfigMap` or `Secret` resources to configure pods with environment variables and secrets.
+- `ConfigMap` variables can be set to `optional`, which means that the configuration is optional. This will allow for pods to not fail in case `ConfigMap` is not available.
+- In `Dockerfile`, `ENTRYPOINT` is the executable when the container starts, and `CMD` specifies the args that must be passed to the `ENTRYPOINT`.
+- Use external secrets operators to store the secrets for `Secret` resources. [ref](https://external-secrets.io/latest/), [sops](https://github.com/getsops/sops)
+- Explore `kops` to setup a local k8s cluster on a personal workstation.
+- Use `kubectl exec` to enter interactive shell mode in a pod [ref](https://kubernetes.io/docs/tasks/debug/debug-application/get-shell-running-container/).
+- Running `env` command in a pod will list out all the environment variables configured for the pod.
+- Use `ConfigMap` to create an `.env` file on the `webapp` pod [read docs]. Exec into the pod container to verify that the `.env` file is created.
+
+## Persistent Data Storage
+
+- Kubernetes persistent volumes or PVs (various volume types) -> GCE persistent disk, AWS EBS, etc [every pod has it's own storage]
+- `emptyDir` is ephemeral volume -> pass data between multiple containers in a pod. (similar to scratch space or temporary storage)
+- `hostPath` volume mounts file/directory from host node filesystem to pod.
+- Static vs Dynamic provisioning -> (static provisioning not usually required)
+- Reclaim PVs -> always `delete` -> `PersistentVolumeClaim` resource in k8s
+- `volumeClaimTemplate` is the way to go for reclaiming PVs -> so that each instance can have it's own storage
+
+## ReplicaSets
+
+- `containerPort` and `port`
+- `volumeMode` and `volumeMounts`
+
+## Stateful services
+
+- `StatefulSets` instead of `ReplicaSets` for database use-cases.
+- `Postgres` service should run as a `StatefulSet`.
+- `ReplicaSets` are like cattle, `StatefulSets` are like pets, we need to take care of them otherwise we lose data.
+- Unique name, ID, storage, deployment and scaling guarantee.
+- Update strategies: `onDelete` or `rollingUpdate`. (Rolling update is the default strategy if nothing is specified).
