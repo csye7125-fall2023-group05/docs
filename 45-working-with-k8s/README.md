@@ -8,6 +8,9 @@
 - Kubernetes
   - Pod
   - Init Containers
+  - Stateless services
+  - Service and service discovery
+  - Configuration and secrets management
 
 ## Installations
 
@@ -32,7 +35,38 @@
 - [Kube-capacity](https://github.com/robscott/kube-capacity)
 - [ktop](https://github.com/vladimirvivien/ktop)
 
-## Letcture Notes
+## Docker Compose file for PostgreSQL
+
+```yaml
+services:
+  postgres:
+    hostname: postgres_local
+    image: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - csye7125
+    environment:
+      - POSTGRES_USER=csye7125
+      - PGUSER=csye7125
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=csye7125
+      - PGDATA=/var/lib/postgresql/data
+      - TZ=GMT
+      - PGTZ=GMT
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" , "-U", "csye7125", "-d", "csye7125" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+networks:
+  csye7125:
+    driver: bridge
+```
+
+## Lecture Notes
 
 - Keep kubectl/kind/minikube version to 1.25 (at max)
 - name, namespace, metadata, annotations
