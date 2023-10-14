@@ -31,3 +31,34 @@
 - [kube-ps1](https://github.com/jonmosco/kube-ps1)
 - [Kube-capacity](https://github.com/robscott/kube-capacity)
 - [ktop](https://github.com/vladimirvivien/ktop)
+
+## Letcture Notes
+
+- Keep kubectl/kind/minikube version to 1.25 (at max)
+- name, namespace, metadata, annotations
+- install `k9s` and configure skins
+- setup kubecontext (config) locally -> follow configs from [ref](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/).
+
+### Init Containers
+
+- Like regular containers, except that they have to finish. 
+- They run sequentially.
+- If they do not finish, regular containers will not run.
+- Used for database migration, etc. [`flyway migrations`](https://documentation.red-gate.com/fd/migrations-184127470.html)
+- install [`DBeaver`](https://formulae.brew.sh/cask/dbeaver-community) to visualize db connections locally. 
+- config init containers in such  a way that will not hinder the application -> run migrations in init containers and the destory before running application containers.
+
+### Replication
+
+- reduce latency
+- high availability
+- high thoughput
+
+Stateless service deployment -> stateless systems are replicated to provide redundancy and scale.
+Even for very small services, we must have atleast two replicas to provide a service with high availability.
+
+### Resilient apps
+
+- Run automated health checks for your apps -> liveness and readiness probes.
+- Sanity tests -> very basic tests
+- Sometimes app stop working without their processes crashing, but we need to perform health checks from outside without depending on the app to perform healthchecks.
