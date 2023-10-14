@@ -1,0 +1,13 @@
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamepassword:
+              id: "credential-id"
+              username: "your_username"
+              password: "your_password"
+              description: "default credentials"
+              scope: GLOBAL
+unclassified:
+  location:
+    url: http://localhost:8080/
