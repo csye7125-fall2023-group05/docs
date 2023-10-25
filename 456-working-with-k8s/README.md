@@ -25,6 +25,28 @@
 - [Local Cluster Options](https://www.cncf.io/wp-content/uploads/2020/08/CNCF-Webinar-Navigating-the-Sea-of-Local-Clusters-.pdf)
 - [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way)
 
+### Kubernetes
+
+- [Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
+- [ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)
+- [Configure Liveness and Readiness Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/)
+- [Services](https://kubernetes.io/docs/concepts/services-networking/service/)
+- [NodePort Service](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport)
+- [External Load Balancer](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/)
+- [Inject Data using Environment Variables](https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/)
+- [Readiness Probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#define-readiness-probes)
+- [Pull an Image from a Private Registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+- [Init Containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
+- [Configure Access to Multiple Clusters](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)
+- [Storage Volumes](https://kubernetes.io/docs/concepts/storage/volumes/)
+- [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+- [Persistent Volume Claims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
+- [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/)
+- [Dynamic Volume Provisioning](https://kubernetes.io/docs/concepts/storage/dynamic-provisioning/)
+- [AWS EFS Storage Class](https://github.com/kubernetes-incubator/external-storage/tree/master/aws/efs)
+- [Example: Deploying Cassandra with Stateful Sets](https://kubernetes.io/docs/tutorials/stateful-application/cassandra/)
+- [failure-domain.beta.kubernetes.io/zone](https://kubernetes.io/docs/reference/kubernetes-api/labels-annotations-taints/#failure-domainbetakubernetesiozone)
+
 ## Tools
 
 - [Lens IDE](https://k8slens.dev/)
@@ -43,7 +65,7 @@ services:
     hostname: postgres_local
     image: postgres
     ports:
-      - "5432:5432"
+      - '5432:5432'
     networks:
       - csye7125
     environment:
@@ -55,7 +77,7 @@ services:
       - TZ=GMT
       - PGTZ=GMT
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" , "-U", "csye7125", "-d", "csye7125" ]
+      test: ['CMD-SHELL', 'pg_isready', '-U', 'csye7125', '-d', 'csye7125']
       interval: 5s
       timeout: 5s
       retries: 10
@@ -80,7 +102,7 @@ networks:
 - If they do not finish, regular containers will not run.
 - Used for database migration, etc. [`flyway migrations`](https://documentation.red-gate.com/fd/migrations-184127470.html)
 - install [`DBeaver`](https://formulae.brew.sh/cask/dbeaver-community) to visualize db connections locally.
-- config init containers in such  a way that will not hinder the application -> run migrations in init containers and the destory before running application containers.
+- config init containers in such a way that will not hinder the application -> run migrations in init containers and the destory before running application containers.
 
 ### Replication
 
