@@ -9,7 +9,7 @@
 - [Spring Cloud Sidecar](https://dzone.com/articles/spring-cloud-sidecar)
 - [The Distributed System ToolKit: Patterns for Composite Containers](https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/)
 
-Ambassador pattern
+### Ambassador pattern
 
 - [Ambassador pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/ambassador)
 - [How To Use the Ambassador Pattern to Dynamically Configure Services on CoreOS](https://www.digitalocean.com/community/tutorials/how-to-use-the-ambassador-pattern-to-dynamically-configure-services-on-coreos)
@@ -26,7 +26,7 @@ Ambassador pattern
 - [MapReduce](https://en.wikipedia.org/wiki/MapReduce)
 - [Apache Hadoop](https://hadoop.apache.org/)
 
-Stream Processing
+### Stream Processing
 
 - [Apache Kafka](https://kafka.apache.org/)
 - [What is streaming data?](https://aws.amazon.com/streaming-data/)
